@@ -1,0 +1,59 @@
+import ids.deployment.Device;
+import ids.deployment.Network;
+import ids.deployment.Host;
+import ids.Main;
+import ids.Alert;
+import ids.communication.Update;
+dialect "java"
+rule "RAM Usage"
+    when
+        host :Host(host.getmem_usage() >= 70.0d) 
+    then
+		Alert temp = new Alert(host,1);
+		Update.addAlert((Device)host,temp);
+end
+
+rule "High CPU Usage"
+    when
+        host :Host(host.getcpu_usage() >= 70.0d) 
+    then
+		Alert temp = new Alert(host,2);
+		Update.addAlert((Device)host,temp);
+end
+
+
+rule "High Disk Usage"
+    when
+        host :Host(host.getdisk_diff_read() >= 90.0d | host.getdisk_diff_write() >= 90.0d) 
+    then
+		Alert temp = new Alert(host,3);
+		Update.addAlert((Device)host,temp);
+end
+
+/*
+rule "IP Spoofing"
+    when
+    	host1 :Host()
+        host2 :Host(host2.hasIP(host1.getIP()))
+        Alert temp = new Alert(host,202);
+		Update.addAlert((Device)host,temp); 
+    then
+end
+
+rule "User Firewall Disabled"
+	when
+		host :Host(host.getfirewall().get(0))
+	then
+		Alert temp = new Alert(host,8);
+		Update.addAlert((Device)host,temp);
+end
+
+rule "Domain Firewall Disabled"
+	when
+		host :Host(host.getfirewall().get(1))
+	then
+		Alert temp = new Alert(host,9);
+		Update.addAlert((Device)host,temp);
+end
+
+*/

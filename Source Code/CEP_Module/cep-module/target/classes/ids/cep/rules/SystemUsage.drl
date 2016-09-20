@@ -1,0 +1,14 @@
+import ids.deployment.Device;
+import ids.deployment.Network;
+import ids.deployment.Host;
+import ids.Main;
+import ids.Alert;
+import ids.communication.Update;
+dialect "java"
+rule "RAM Usage"
+    when
+        host :Host(host.getcpu_usage() >= 70.0d) 
+    then
+		Alert temp = new Alert(host,1);
+		Update.addAlert((Device)host,temp);
+end
